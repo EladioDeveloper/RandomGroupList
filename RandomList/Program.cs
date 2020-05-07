@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Office.Interop;
-
+using Microsoft.Office.Interop.Excel;
 
 namespace RandomList
 {
@@ -165,16 +166,22 @@ namespace RandomList
                                             restThemes--;
                                         }
                                         string fileName = "Resultado-1.txt";
-                                        string filePath = currentDirectory + "\\" + fileName;
+                                        string filePath = currentDirectory + "\\Resultados\\" + fileName;
                                         if (File.Exists(filePath))
                                         {
-                                            string[] divition = fileName.Split('-');
+                                            string[] files = Directory.GetFileSystemEntries(currentDirectory + "\\Resultados", "*.txt");
+                                            for(int i = 0; i < files.Count(); i++)
+                                            {
+                                                files[i] = files[i].Split('\\')[files[i].Split('\\').Count() - 1];
+                                            }
+                                            
+                                            string[] divition = files[files.Count() - 1].Split('-');
                                             divition[1] = divition[1].Split('.')[0];
                                             int numberFile = int.Parse(divition[1]);
                                             numberFile += 1;
-                                            filePath = currentDirectory + $"\\Resultado-{numberFile}.txt";
+                                            filePath = currentDirectory + $"\\Resultados\\Resultado-{numberFile}.txt";
                                         }
-                                        using (StreamWriter sw = File.AppendText(filePath))
+                                        using (StreamWriter sw = File.CreateText(filePath))
                                         {
                                             sw.WriteLine("==========================================================================");
                                             foreach (var grp in groups)
