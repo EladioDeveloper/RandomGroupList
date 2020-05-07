@@ -21,7 +21,7 @@ namespace RandomList
                     Console.Write("Nombre del archivo de Estudiantes: ");
                     studentFileName = Console.ReadLine();
                     string studentPath = currentDirectory + "\\" + studentFileName;
-                    if (File.Exists(studentPath))
+                    if (File.Exists(studentPath))  //Comprobar si tiene el archivo de estudiantes
                     {
                         while (true)
                         {
@@ -30,12 +30,13 @@ namespace RandomList
                             themeFileName = Console.ReadLine();
                             string themePath = currentDirectory + "\\" + themeFileName;
 
-                            if (File.Exists(themePath))
+                            if (File.Exists(themePath)) //Comprobar si tiene el archivo de temas
                             {
 
                                 Console.Write("Inserte la cantidad de estudiantes por grupos: ");
-                                int cantEstGroup = int.Parse(Console.ReadLine());
+                                int cantEstGroup = int.Parse(Console.ReadLine()); 
 
+                                //Inicializando listas para hacer los procesos
                                 List<Grupo> groups = new List<Grupo>();
                                 List<Estudiante> students = new List<Estudiante>();
                                 List<Tema> themes = new List<Tema>();
@@ -45,7 +46,10 @@ namespace RandomList
                                     string line;
                                     Estudiante student;
                                     while ((line = reader.ReadLine()) != null)
-                                    {
+                                    {                         
+                                        /*Para cada linea de estudiante en el archivo crea
+                                        un objeto clase Estudiante y lo introduce a la lista*/
+                                        
                                         student = new Estudiante();
                                         student.FullName = line;
                                         students.Add(student);
@@ -58,6 +62,8 @@ namespace RandomList
                                     Tema theme;
                                     while ((line = reader.ReadLine()) != null)
                                     {
+                                        /*Para cada linea de temas en el archivo crea
+                                        un objeto clase Tema y lo introduce a la lista*/
                                         theme = new Tema();
                                         theme.Name = line;
                                         themes.Add(theme);
@@ -66,10 +72,10 @@ namespace RandomList
 
                                 if (students.Count >= cantEstGroup && themes.Count >= cantEstGroup)
                                 {
-                                    int groupsCount = students.Count / cantEstGroup;
-                                    int rest = students.Count % cantEstGroup;
-                                    int themesCount = themes.Count / groupsCount;
-                                    int restThemes = themes.Count % groupsCount;
+                                    int groupsCount = students.Count / cantEstGroup; // Calcula cantidad de grupos
+                                    int rest = students.Count % cantEstGroup; // Calcula cuantos estudiantes restan
+                                    int themesCount = themes.Count / groupsCount; // Calcula cantidad de temas por grupo
+                                    int restThemes = themes.Count % groupsCount; // Calcula cantidad de temas restantes
                                     if (students.Count >= groupsCount && themes.Count >= groupsCount)
                                     {
                                         Random random = new Random();
@@ -78,18 +84,25 @@ namespace RandomList
                                         List<Tema> themeList;
                                         for (int a = 0; a < groupsCount; a++)
                                         {
+                                            // Inicializa un nuevo grupo en cada iteracion
                                             group = new Grupo();
                                             group.Nro = a + 1;
                                             studentList = new List<Estudiante>();
                                             themeList = new List<Tema>();
                                             for (int b = 0; b < cantEstGroup; b++)
                                             {
+                                                /* Toma un estudiante aleatorio de la lista de estudiantes 
+                                                 lo agrega a la lista de estudiantes de ese grupo y luego lo
+                                                 remueve de la lista original de estudiantes */
                                                 int i = random.Next(0, students.Count);
                                                 studentList.Add(students[i]);
                                                 students.RemoveAt(i);
                                             }
                                             for (int c = 0; c < themesCount; c++)
                                             {
+                                                /* Toma un tema aleatorio de la lista de temas 
+                                                 lo agrega a la lista de temas de ese grupo y luego lo
+                                                 remueve de la lista original de temas */
                                                 int i = random.Next(0, themes.Count);
                                                 themeList.Add(themes[i]);
                                                 themes.RemoveAt(i);
@@ -119,20 +132,20 @@ namespace RandomList
                                                         }
                                                     }
                                                 }
-                                            }
+                                            } // Comprueba si el grupo al que se quiere agregar es el indicado
                                             counts.Add(i);
                                             if (counts.Count == groups.Count)
                                                 counts.Clear();
                                             int x = random.Next(0, students.Count);
-                                            List<Estudiante> studentsTemp = groups[i].Estudiantes;
+                                            List<Estudiante> studentsTemp = groups[i].Estudiantes; //Copia la lista
                                             Estudiante studentTemp = students[x];
 
-                                            studentsTemp.Add(studentTemp);
-                                            groups[i].Estudiantes = studentsTemp;
-                                            students.RemoveAt(x);
-                                            rest--;
+                                            studentsTemp.Add(studentTemp); //Agrega el estudiante a la lista temporal
+                                            groups[i].Estudiantes = studentsTemp; //Sustituye la lista
+                                            students.RemoveAt(x); //Remueve ese estudiante restante de la lista de estudiantes
+                                            rest--; //Continua haciendo ese proceso hasta que ya no haya ESTUDIANTES restantes
                                         }
-                                        counts.Clear();
+                                        counts.Clear(); //REINICIA Counts para hacer el mismo proceso con los temas
                                         while (restThemes > 0)
                                         {
                                             int i = random.Next(0, groups.Count);
@@ -152,7 +165,7 @@ namespace RandomList
                                                         }
                                                     }
                                                 }
-                                            }
+                                            } // Comprueba si el grupo al que se quiere agregar es el indicado
                                             counts.Add(i);
                                             if (counts.Count == groups.Count)
                                                 counts.Clear();
@@ -160,10 +173,10 @@ namespace RandomList
                                             List<Tema> themesTemp = groups[i].Temas;
                                             Tema themeTemp = themes[x];
 
-                                            themesTemp.Add(themeTemp);
-                                            groups[i].Temas = themesTemp;
-                                            themes.RemoveAt(x);
-                                            restThemes--;
+                                            themesTemp.Add(themeTemp); //Agrega el estudiante a la lista temporal
+                                            groups[i].Temas = themesTemp; //Sustituye la lista
+                                            themes.RemoveAt(x); //Remueve ese tema restante de la lista de temas
+                                            restThemes--; // Continua haciendo ese proceso hasta que ya no haya TEMAS restantes
                                         }
                                         string fileName = $"Resultado-{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt";
                                         string filePath = currentDirectory + "\\Resultados\\" + fileName;
@@ -187,9 +200,13 @@ namespace RandomList
                                         }*/
                                         using (StreamWriter sw = File.CreateText(filePath))
                                         {
+
+                                            //Escribe en el txt de resultados los grupos creados y sus integrantes y temas
+
                                             sw.WriteLine("==========================================================================");
                                             foreach (var grp in groups)
                                             {
+                                                
                                                 sw.WriteLine($"Grupo #{grp.Nro}");
                                                 sw.WriteLine("----------------------------------------------------------------------");
                                                 int i = 1;
@@ -211,6 +228,7 @@ namespace RandomList
 
                                         using (StreamReader sr = new StreamReader(filePath))
                                         {
+                                            // Lee cada linea del archivo creado y lo muestra en la consola
                                             string line;
                                             while ((line = sr.ReadLine()) != null)
                                             {
