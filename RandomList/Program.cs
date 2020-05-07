@@ -165,9 +165,13 @@ namespace RandomList
                                             themes.RemoveAt(x);
                                             restThemes--;
                                         }
-                                        string fileName = "Resultado-1.txt";
+                                        string fileName = $"Resultado-{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt";
                                         string filePath = currentDirectory + "\\Resultados\\" + fileName;
-                                        if (File.Exists(filePath))
+                                        if(!Directory.Exists(currentDirectory + "\\Resultados"))
+                                        {
+                                            Directory.CreateDirectory(currentDirectory + "\\Resultados");
+                                        }
+                                        /*if (File.Exists(filePath))
                                         {
                                             string[] files = Directory.GetFileSystemEntries(currentDirectory + "\\Resultados", "*.txt");
                                             for(int i = 0; i < files.Count(); i++)
@@ -180,7 +184,7 @@ namespace RandomList
                                             int numberFile = int.Parse(divition[1]);
                                             numberFile += 1;
                                             filePath = currentDirectory + $"\\Resultados\\Resultado-{numberFile}.txt";
-                                        }
+                                        }*/
                                         using (StreamWriter sw = File.CreateText(filePath))
                                         {
                                             sw.WriteLine("==========================================================================");
