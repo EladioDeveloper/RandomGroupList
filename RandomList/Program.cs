@@ -21,7 +21,9 @@ namespace RandomList
                     Console.Write("Nombre del archivo de Estudiantes: ");
                     studentFileName = Console.ReadLine();
                     string studentPath = currentDirectory + "\\" + studentFileName;
-                    if (File.Exists(studentPath))  //Comprobar si tiene el archivo de estudiantes
+                    
+                    //Comprobar si tiene el archivo de estudiantes
+                    if (File.Exists(studentPath))  
                     {
                         while (true)
                         {
@@ -30,7 +32,8 @@ namespace RandomList
                             themeFileName = Console.ReadLine();
                             string themePath = currentDirectory + "\\" + themeFileName;
 
-                            if (File.Exists(themePath)) //Comprobar si tiene el archivo de temas
+                            //Comprobar si tiene el archivo de temas
+                            if (File.Exists(themePath)) 
                             {
 
                                 Console.Write("Inserte la cantidad de estudiantes por grupos: ");
@@ -72,10 +75,12 @@ namespace RandomList
 
                                 if (students.Count >= cantEstGroup && themes.Count >= cantEstGroup)
                                 {
-                                    int groupsCount = students.Count / cantEstGroup; // Calcula cantidad de grupos
-                                    int rest = students.Count % cantEstGroup; // Calcula cuantos estudiantes restan
-                                    int themesCount = themes.Count / groupsCount; // Calcula cantidad de temas por grupo
-                                    int restThemes = themes.Count % groupsCount; // Calcula cantidad de temas restantes
+                                    int groupsCount = students.Count / cantEstGroup;    // Calcula cantidad de grupos
+                                    int rest = students.Count % cantEstGroup;           // Calcula cuantos estudiantes restan
+                                    int themesCount = themes.Count / groupsCount;       // Calcula cantidad de temas por grupo
+                                    int restThemes = themes.Count % groupsCount;        // Calcula cantidad de temas restantes
+
+                                    //Se realizan validaciones según requerimientos
                                     if (students.Count >= groupsCount && themes.Count >= groupsCount)
                                     {
                                         Random random = new Random();
@@ -132,20 +137,22 @@ namespace RandomList
                                                         }
                                                     }
                                                 }
-                                            } // Comprueba si el grupo al que se quiere agregar es el indicado
+                                            } 
+                                            // Comprueba si el grupo al que se quiere agregar es el indicado
                                             counts.Add(i);
                                             if (counts.Count == groups.Count)
                                                 counts.Clear();
+
                                             int x = random.Next(0, students.Count);
-                                            List<Estudiante> studentsTemp = groups[i].Estudiantes; //Copia la lista
+                                            List<Estudiante> studentsTemp = groups[i].Estudiantes;//Copia la lista
                                             Estudiante studentTemp = students[x];
 
-                                            studentsTemp.Add(studentTemp); //Agrega el estudiante a la lista temporal
-                                            groups[i].Estudiantes = studentsTemp; //Sustituye la lista
-                                            students.RemoveAt(x); //Remueve ese estudiante restante de la lista de estudiantes
-                                            rest--; //Continua haciendo ese proceso hasta que ya no haya ESTUDIANTES restantes
+                                            studentsTemp.Add(studentTemp);                        //Agrega el estudiante a la lista temporal
+                                            groups[i].Estudiantes = studentsTemp;                 //Sustituye la lista
+                                            students.RemoveAt(x);                                 //Remueve ese estudiante restante de la lista de estudiantes
+                                            rest--;                                               //Continua haciendo ese proceso hasta que ya no haya ESTUDIANTES restantes
                                         }
-                                        counts.Clear(); //REINICIA Counts para hacer el mismo proceso con los temas
+                                        counts.Clear();                                           //REINICIA Counts para hacer el mismo proceso con los temas
                                         while (restThemes > 0)
                                         {
                                             int i = random.Next(0, groups.Count);
@@ -173,10 +180,10 @@ namespace RandomList
                                             List<Tema> themesTemp = groups[i].Temas;
                                             Tema themeTemp = themes[x];
 
-                                            themesTemp.Add(themeTemp); //Agrega el estudiante a la lista temporal
+                                            themesTemp.Add(themeTemp);    //Agrega el estudiante a la lista temporal
                                             groups[i].Temas = themesTemp; //Sustituye la lista
-                                            themes.RemoveAt(x); //Remueve ese tema restante de la lista de temas
-                                            restThemes--; // Continua haciendo ese proceso hasta que ya no haya TEMAS restantes
+                                            themes.RemoveAt(x);           //Remueve ese tema restante de la lista de temas
+                                            restThemes--;                 //Continua haciendo ese proceso hasta que ya no haya TEMAS restantes
                                         }
                                         string fileName = $"Resultado-{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt";
                                         string filePath = currentDirectory + "\\Resultados\\" + fileName;
